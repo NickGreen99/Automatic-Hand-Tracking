@@ -78,8 +78,8 @@ This function generates segmentation masks for hand regions in a video using the
 
 The function processes a video by identifying landmarks for each hand, defining bounding boxes around those landmarks, and using these as inputs to the SAM2 model. 
 
-![Hand 1](hand1.png)
-![Hand 2](hand2.png)
+![Right Hand](right_hand.png)
+![Left Hand](left_hand.png)
 
 The model generates segmentation masks for the specified regions, which are then visualized on the frames. These masks are propagated across the video to track hand movements. The function also combines the masks with the original video to create a segmented output video, saved as `output_video.mp4`. Here is frame 120, which is around the middle of the video.
 

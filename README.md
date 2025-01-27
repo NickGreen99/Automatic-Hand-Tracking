@@ -68,10 +68,19 @@ Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger
 | 19            | PINKY_DIP  | Little finger DIP joint                    |
 | 20            | PINKY_TIP  | Tip of the little finger                   |
 
+As seen below Mediapipe is essential for helping as locate the position of the hands.
+
 ![Landmark Locations](landmark_locations.png)
 
 ## Part 2 (Create video with hand masks)
 
 This function generates segmentation masks for hand regions in a video using the output from `hand_locations()`. It initializes the SAM2 video predictor model and uses hand landmarks and bounding boxes as prompts to segment specific hand regions in each frame.
 
-The function processes a video by identifying landmarks for each hand, defining bounding boxes around those landmarks, and using these as inputs to the SAM2 model. The model generates segmentation masks for the specified regions, which are then visualized on the frames. These masks are propagated across the video to track hand movements. The function also combines the masks with the original video to create a segmented output video, saved as `output_video.mp4`.
+The function processes a video by identifying landmarks for each hand, defining bounding boxes around those landmarks, and using these as inputs to the SAM2 model. 
+
+![Hand 1](hand1.png)
+![Hand 2](hand2.png)
+
+The model generates segmentation masks for the specified regions, which are then visualized on the frames. These masks are propagated across the video to track hand movements. The function also combines the masks with the original video to create a segmented output video, saved as `output_video.mp4`. Here is frame 120, which is around the middle of the video.
+
+![Frame 120](frame120.png)

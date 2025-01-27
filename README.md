@@ -32,6 +32,10 @@ cd ..
 
 ## Part 1 (Find hand locations)
 
+sajdhbsabadhsbdhasbdas
+
+
 ## Part 2 (Create video with hand masks)
+dashdjasbdjhdbjsad
 
 

@@ -7,7 +7,7 @@ pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu1
 ```shell
 cd checkpoints
 bash download_ckpts.sh
-cd..
+cd ..
 ```
 
 

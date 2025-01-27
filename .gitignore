@@ -1,0 +1,23 @@
+# Ignore Python cache, build, and distribution files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Ignore virtual environments
+venv/
+.venv/
+env/
+
+# Ignore local environment configuration files
+.env
+
+# Ignore the cloned sam2 folder
+sam2/
+
+# Ignore frames (code specifies how to create it)
+frames/

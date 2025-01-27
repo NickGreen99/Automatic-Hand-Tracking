@@ -1,14 +1,12 @@
 # Automatic Hand Tracking
 
-This is a data analysis project using NBA Data to test some hypotheses about the influence of veterans and team pace on playoff success.
-It works mostly as a showcase of web scaping nba data which can then be used to do data analysis tasks, such as significance testing.
-
+This project utilizes SAM2 and mediapipe, in order to build an automatic pipeline that tracks hand movements in a video.
 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Part 1](#part1)
-- [Part 2](#part2)
+- [Part 1 (Find hand locations)](#part1)
+- [Part 2 (Create video with hand masks)](#part2)
 
 ## Installation
 SAM 2 needs to be installed first before use. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.
@@ -32,8 +30,8 @@ bash download_ckpts.sh
 cd ..
 ```
 
-## Part 1
+## Part 1 (Find hand locations)
 
-## Part 2
+## Part 2 (Create video with hand masks)
 
 

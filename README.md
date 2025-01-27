@@ -19,6 +19,8 @@ conda activate sam2_test
 Make sure you have `pip` installed to install the requirements.
 
 ```shell
+git clone https://github.com/NickGreen99/Automatic-Hand-Tracking.git
+
 pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu118 --extra-index-url https://pypi.org/simple
 ```
 

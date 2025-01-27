@@ -36,44 +36,9 @@ cd ..
 
 A simple Python function that uses MediaPipe Hands to detect hand landmarks in the first frame of a given video. It returns a NumPy array containing the (x, y) coordinates for up to two hands, each with 21 landmarks.
 
-### Features
+This function processes the first frame of a video to detect hand landmarks using MediaPipe. It detects up to 2 hands with a minimum detection and tracking confidence of 0.5. The frame is first converted to RGB (required by MediaPipe), and the landmarks for each hand are detected. These landmarks are then converted to pixel coordinates (x, y). Even though the function draws landmarks on the image for visualization, it returns only the coordinate data. The output is a NumPy array with shape `(1, 2, 21, 2)` where the dimensions correspond to one frame, up to two hands, 21 landmarks per hand, and two coordinates (x, y). If no hands are detected, the returned array contains zeros for missing landmarks. for 10 seconds.
 
-One-frame detection: This function only processes the first frame from the specified video file.
-
-Hand landmark detection: Uses MediaPipe to detect landmarks for up to 2 hands.
-
-Coordinates in pixel space: Converts normalized landmark coordinates to (x, y) pixel positions.
-
-Visualization: Internally draws landmarks and connections on the frame (though it returns only the coordinates array).
-
-### How It Works
-
-Initialize MediaPipe Hands: The Hands object is configured to detect up to 2 hands with a minimum detection confidence of 0.5.
-
-Open the video file: cv2.VideoCapture(video_path) loads the video.
-
-Read the first frame:
-
-The function converts the frame to RGB (required by MediaPipe).
-
-MediaPipe processes the frame to find hand landmarks.
-
-Each landmark is stored as (x, y) in pixel coordinates rather than normalized floats.
-
-Draw landmarks: Landmarks are drawn onto the frame (for visualization), but the function ultimately returns only coordinate data.
-
-Return: A NumPy array shaped (1, 2, 21, 2):
-
-1 = The single frame processed.
-
-2 = Up to two hands.
-
-21 = Each hand’s landmarks.
-
-2 = The (x, y) coordinates.
-
-If no hands are detected, the returned array will contain zeros for missing landmarks.
-
+This function processes the first frame of a given video to detect up to two hands using MediaPipe, converting normalized hand landmarks to pixel coordinates. If no hands are detected, the output contains zeros for missing landmarks. It internally draws landmarks on the frame, but returns a NumPy array of shape (1, 2, 21, 2), meaning one frame, up to two hands, 21 landmarks per hand, and (x, y) coordinates for each. The frame is converted to RGB before processing, with detection set to a minimum confidence of 0.5. This makes it a quick way to retrieve basic hand position data from a single frame.
 | Landmark Index | Name       | Typical Location                           |
 |---------------:|:-----------|:-------------------------------------------|
 | 0             | WRIST      | Base of the palm                           |

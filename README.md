@@ -11,6 +11,14 @@ It works mostly as a showcase of web scaping nba data which can then be used to 
 - [Part 2](#part2)
 
 ## Installation
+SAM 2 needs to be installed first before use. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.
+
+```shell
+conda create -n sam2_test python=3.12 -y
+conda activate sam2_test
+```
+
+Make sure you have `pip` installed to install the requirements.
 
 ```shell
 pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu118 --extra-index-url https://pypi.org/simple

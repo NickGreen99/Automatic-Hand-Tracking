@@ -34,11 +34,12 @@ cd ..
 
 ## Part 1 (Find hand locations)
 
-A simple Python function that uses MediaPipe Hands to detect hand landmarks in the first frame of a given video. It returns a NumPy array containing the (x, y) coordinates for up to two hands, each with 21 landmarks.
+The file `hand_locations.py` has the simple Python function `hand_locations()` that uses MediaPipe Hands to detect hand landmarks in the first frame of a given video. It takes as an input the path to a video file and it returns a 4 dimensional NumPy array containing the (x, y) coordinates for up to two hands, each with 21 landmarks.
 
-This function processes the first frame of a video to detect hand landmarks using MediaPipe. It detects up to 2 hands with a minimum detection and tracking confidence of 0.5. The frame is first converted to RGB (required by MediaPipe), and the landmarks for each hand are detected. These landmarks are then converted to pixel coordinates (x, y). Even though the function draws landmarks on the image for visualization, it returns only the coordinate data. The output is a NumPy array with shape `(1, 2, 21, 2)` where the dimensions correspond to one frame, up to two hands, 21 landmarks per hand, and two coordinates (x, y). If no hands are detected, the returned array contains zeros for missing landmarks. for 10 seconds.
+This function processes the first frame of a video to detect hand landmarks using MediaPipe. These landmarks are converted to pixel coordinates (x, y).  These landmarks will then  be used as prompt points in Part 2.The output is a NumPy array with shape `(1, 2, 21, 2)` where the dimensions correspond to one frame, up to two hands, 21 landmarks per hand, and two coordinates (x, y). 
 
-This function processes the first frame of a given video to detect up to two hands using MediaPipe, converting normalized hand landmarks to pixel coordinates. If no hands are detected, the output contains zeros for missing landmarks. It internally draws landmarks on the frame, but returns a NumPy array of shape (1, 2, 21, 2), meaning one frame, up to two hands, 21 landmarks per hand, and (x, y) coordinates for each. The frame is converted to RGB before processing, with detection set to a minimum confidence of 0.5. This makes it a quick way to retrieve basic hand position data from a single frame.
+Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger, ring finger, pinky :
+
 | Landmark Index | Name       | Typical Location                           |
 |---------------:|:-----------|:-------------------------------------------|
 | 0             | WRIST      | Base of the palm                           |

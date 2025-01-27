@@ -74,6 +74,31 @@ Return: A NumPy array shaped (1, 2, 21, 2):
 
 If no hands are detected, the returned array will contain zeros for missing landmarks.
 
+| Landmark Index | Name       | Typical Location                           |
+|---------------:|:-----------|:-------------------------------------------|
+| 0             | WRIST      | Base of the palm                           |
+| 1             | THUMB_CMC  | Thumb carpometacarpal joint                |
+| 2             | THUMB_MCP  | Thumb metacarpophalangeal joint            |
+| 3             | THUMB_IP   | Thumb interphalangeal joint                |
+| 4             | THUMB_TIP  | Tip of the thumb                           |
+| 5             | INDEX_MCP  | Index finger metacarpophalangeal joint     |
+| 6             | INDEX_PIP  | Index finger proximal interphalangeal joint|
+| 7             | INDEX_DIP  | Index finger distal interphalangeal joint  |
+| 8             | INDEX_TIP  | Tip of the index finger                    |
+| 9             | MIDDLE_MCP | Middle finger MCP joint                    |
+| 10            | MIDDLE_PIP | Middle finger PIP joint                    |
+| 11            | MIDDLE_DIP | Middle finger DIP joint                    |
+| 12            | MIDDLE_TIP | Tip of the middle finger                   |
+| 13            | RING_MCP   | Ring finger MCP joint                      |
+| 14            | RING_PIP   | Ring finger PIP joint                      |
+| 15            | RING_DIP   | Ring finger DIP joint                      |
+| 16            | RING_TIP   | Tip of the ring finger                     |
+| 17            | PINKY_MCP  | Little finger MCP joint                    |
+| 18            | PINKY_PIP  | Little finger PIP joint                    |
+| 19            | PINKY_DIP  | Little finger DIP joint                    |
+| 20            | PINKY_TIP  | Tip of the little finger                   |
+
+
 ## Part 2 (Create video with hand masks)
 dashdjasbdjhdbjsad
 

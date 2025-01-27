@@ -9,7 +9,7 @@ This project utilizes SAM2 and mediapipe, in order to build an automatic pipelin
 - [Part 2 (Create video with hand masks)](#part-2-create-video-with-hand-masks)
 
 ## Installation
-SAM 2 needs to be installed first before use. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.
+SAM 2 needs to be installed first before use. We need `torch>=2.5.1`, as well as `python>=3.10`. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.
 
 ```shell
 conda create -n sam2_test python=3.12 -y

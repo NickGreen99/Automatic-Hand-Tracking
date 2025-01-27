@@ -68,6 +68,7 @@ Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger
 | 19            | PINKY_DIP  | Little finger DIP joint                    |
 | 20            | PINKY_TIP  | Tip of the little finger                   |
 
+![Landmark Locations](landmark_locations.png)
 
 ## Part 2 (Create video with hand masks)
 

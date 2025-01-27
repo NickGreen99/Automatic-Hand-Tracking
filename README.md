@@ -5,6 +5,7 @@ This project utilizes SAM2 and mediapipe, in order to build an automatic pipelin
 ## Table of Contents
 
 - [Installation](#installation)
+- [Execution](#execution)
 - [Part 1 (Find hand locations)](#part-1-find-hand-locations)
 - [Part 2 (Create video with hand masks)](#part-2-create-video-with-hand-masks)
 
@@ -31,6 +32,9 @@ cd checkpoints
 bash download_ckpts.sh
 cd ..
 ```
+## Execution
+
+Once all the necessary installations are complete, run the `main.py` file.
 
 ## Part 1 (Find hand locations)
 
@@ -66,6 +70,7 @@ Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger
 
 
 ## Part 2 (Create video with hand masks)
-dashdjasbdjhdbjsad
 
+This function generates segmentation masks for hand regions in a video using the output from `hand_locations()`. It initializes the SAM2 video predictor model and uses hand landmarks and bounding boxes as prompts to segment specific hand regions in each frame.
 
+The function processes a video by identifying landmarks for each hand, defining bounding boxes around those landmarks, and using these as inputs to the SAM2 model. The model generates segmentation masks for the specified regions, which are then visualized on the frames. These masks are propagated across the video to track hand movements. The function also combines the masks with the original video to create a segmented output video, saved as `output_video.mp4`.

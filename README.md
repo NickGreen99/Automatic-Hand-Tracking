@@ -5,8 +5,8 @@ This project utilizes SAM2 and mediapipe, in order to build an automatic pipelin
 ## Table of Contents
 
 - [Installation](#installation)
-- [Part 1 (Find hand locations)](#part1)
-- [Part 2 (Create video with hand masks)](#part2)
+- [Part 1 (Find hand locations)](#part-1-find-hand-locations)
+- [Part 2 (Create video with hand masks)](#part-2-create-video-with-hand-masks)
 
 ## Installation
 SAM 2 needs to be installed first before use. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.

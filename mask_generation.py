@@ -24,7 +24,6 @@ def mask_generation(frames, frame_names, data_array):
     ann_frame_idx = 0 
     ann_obj_id = 4  
 
-    # Extract all 21 Mediapipe landmarks for the first hand (data_array[ann_frame_idx][0])
     points = np.array(
         [data_array[ann_frame_idx][0][i].tolist() for i in range(21)],
         dtype=np.float32
@@ -35,15 +34,13 @@ def mask_generation(frames, frame_names, data_array):
         np.int32
     )
 
-    # Define the bounding box around the hand (slightly padded)
     box = np.array([
-        data_array[ann_frame_idx][0][0][0] - 50,  # x_min (wrist landmark x minus padding)
-        data_array[ann_frame_idx][0][0][1] + 50,  # y_min (wrist landmark y plus padding)
-        data_array[ann_frame_idx][0][12][0] + 50,  # x_max (middle finger tip x plus padding)
-        data_array[ann_frame_idx][0][12][1] - 50   # y_max (middle finger tip y minus padding)
+        data_array[ann_frame_idx][0][0][0] - 50,  
+        data_array[ann_frame_idx][0][0][1] + 50,  
+        data_array[ann_frame_idx][0][12][0] + 50,  
+        data_array[ann_frame_idx][0][12][1] - 50   
     ], dtype=np.float32)
 
-    # Add points, labels, and box to SAM2 predictor
     prompts[ann_obj_id] = points, labels
     _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
         inference_state=inference_state,
@@ -54,21 +51,19 @@ def mask_generation(frames, frame_names, data_array):
         box=box,
     )
 
-    # Visualize the results
     plt.figure(figsize=(9, 6))
     plt.title(f"Frame {ann_frame_idx} (Right Hand)")
     plt.imshow(Image.open(os.path.join(frames, frame_names[ann_frame_idx])))
-    show_box(box, plt.gca())  # Show the bounding box
-    show_points(points, labels, plt.gca())  # Show the points
+    show_box(box, plt.gca())
+    show_points(points, labels, plt.gca())
     for i, out_obj_id in enumerate(out_obj_ids):
         show_points(*prompts[out_obj_id], plt.gca())
-        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id)  # Show the mask
+        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id)
     plt.show()
     
     ann_frame_idx = 0  
     ann_obj_id = 8  
 
-    # Extract all 21 Mediapipe landmarks for the second hand (data_array[ann_frame_idx][1])
     points = np.array(
         [data_array[ann_frame_idx][1][i].tolist() for i in range(21)],
         dtype=np.float32
@@ -79,15 +74,13 @@ def mask_generation(frames, frame_names, data_array):
         np.int32
     )
 
-    # Define the bounding box around the second hand (slightly padded)
     box = np.array([
-        data_array[ann_frame_idx][1][0][0] + 60,  # x_min (wrist landmark x minus padding)
-        data_array[ann_frame_idx][1][0][1] + 30,  # y_min (wrist landmark y minus padding)
-        data_array[ann_frame_idx][1][8][0] - 50,  # x_max (middle finger tip x plus padding)
-        data_array[ann_frame_idx][1][8][1] - 30   # y_max (middle finger tip y plus padding)
+        data_array[ann_frame_idx][1][0][0] + 60, 
+        data_array[ann_frame_idx][1][0][1] + 30, 
+        data_array[ann_frame_idx][1][8][0] - 50, 
+        data_array[ann_frame_idx][1][8][1] - 30  
     ], dtype=np.float32)
 
-    # Add points, labels, and box to SAM2 predictor
     prompts[ann_obj_id] = points, labels
     _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
         inference_state=inference_state,
@@ -98,27 +91,24 @@ def mask_generation(frames, frame_names, data_array):
         box=box,
     )
     
-    # Visualize the results
     plt.figure(figsize=(9, 6))
     plt.title(f"Frame {ann_frame_idx} (Left Hand)")
     plt.imshow(Image.open(os.path.join(frames, frame_names[ann_frame_idx])))
-    show_box(box, plt.gca())  # Show the bounding box
-    show_points(points, labels, plt.gca())  # Show the points
+    show_box(box, plt.gca())
+    show_points(points, labels, plt.gca())
     for i, out_obj_id in enumerate(out_obj_ids):
         show_points(*prompts[out_obj_id], plt.gca())
-        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id)  # Show the mask
+        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id) 
     plt.show()
     
 
-    # run propagation throughout the video and collect the results in a dict
-    video_segments = {}  # video_segments contains the per-frame segmentation results
+    video_segments = {} 
     for out_frame_idx, out_obj_ids, out_mask_logits in predictor.propagate_in_video(inference_state):
         video_segments[out_frame_idx] = {
             out_obj_id: (out_mask_logits[i] > 0.0).cpu().numpy()
             for i, out_obj_id in enumerate(out_obj_ids)
         }
 
-    # render the segmentation results every few frames
     vis_frame_stride = 30
     plt.close("all")
     for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
@@ -128,31 +118,25 @@ def mask_generation(frames, frame_names, data_array):
         for out_obj_id, out_mask in video_segments[out_frame_idx].items():
             show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
 
-    # Define output video parameters
     output_video_path = "output_video.mp4"
-    fps = 30  # Set frames per second for the output video
-    frame_size = Image.open(os.path.join(frames, frame_names[0])).size  # (width, height)
+    fps = 30
+    frame_size = Image.open(os.path.join(frames, frame_names[0])).size
 
-    # Initialize video writer
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for MP4 format
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     video_writer = cv2.VideoWriter(output_video_path, fourcc, fps, frame_size)
 
-    # Overlay masks and write frames to video
     for out_frame_idx in range(len(frame_names)):
         frame_path = os.path.join(frames, frame_names[out_frame_idx])
-        frame = np.array(Image.open(frame_path))  # Open frame as a NumPy array
+        frame = np.array(Image.open(frame_path))  
 
         if out_frame_idx in video_segments:
             for out_obj_id, out_mask in video_segments[out_frame_idx].items():
-                # Overlay mask
-                mask = (out_mask * 255).astype(np.uint8)  # Convert mask to 8-bit
-                colored_mask = np.zeros_like(frame, dtype=np.uint8)  # Create a colored mask
-                colored_mask[:, :, 1] = mask  # Green channel for mask (adjust as needed)
+                mask = (out_mask * 255).astype(np.uint8)  
+                colored_mask = np.zeros_like(frame, dtype=np.uint8)  
+                colored_mask[:, :, 1] = mask  
 
-                # Blend the mask with the frame
                 frame = cv2.addWeighted(frame, 0.8, colored_mask, 0.2, 0)
 
-        # Convert RGB to BGR for OpenCV
         frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         video_writer.write(frame_bgr)
 

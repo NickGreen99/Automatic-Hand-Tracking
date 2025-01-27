@@ -4,22 +4,18 @@ from hand_locations import hand_locations
 import cv2
 from mask_generation import mask_generation
 
-# Path to the video
 video_path = "test.mp4"
-frames_dir = "frames"  # Directory to save extracted frames
+frames_dir = "frames" 
 
-# Ensure the output directory exists
 if not os.path.exists(frames_dir):
     os.makedirs(frames_dir)
 
-# Load the video
 cap = cv2.VideoCapture(video_path)
 if not cap.isOpened():
     print("Error: Could not open video.")
 else:
     print("Video loaded successfully.")
 
-# Extract frames and save as JPEG
 frame_idx = 0
 while cap.isOpened():
     ret, frame = cap.read()

@@ -1,27 +1,36 @@
-from show_sam2 import show_box, show_mask, show_points
+from show_sam2 import show_mask, visualize_frame
 import numpy as np
 from PIL import Image
 from sam2.build_sam import build_sam2_video_predictor
 from cuda_availability import check_cuda
+from frame_creation import frame_creation
 import matplotlib.pyplot as plt
 import cv2
 import os
 
-def mask_generation(frames, frame_names, data_array):
+def mask_generation(data_array, output_video_path = "output_video.mp4"):
+    
+    # Create frames along with frame names
+    frames, frame_names = frame_creation()
+    
+    # Check device uses cdua
     device = check_cuda()
+
     if device.type == "cuda":
         print("We can use SAM2")
 
     sam2_checkpoint = "./checkpoints/sam2.1_hiera_large.pt"
     model_cfg = "configs/sam2.1/sam2.1_hiera_l.yaml"
 
+    # Build predictor
     predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=device)
 
+    # Initialize inference state
     inference_state = predictor.init_state(video_path=frames)
 
-    prompts={}
+    # Refine right hand in the first frame and visualize
     ann_frame_idx = 0 
-    ann_obj_id = 4  
+    ann_obj_id = 0
 
     points = np.array(
         [data_array[ann_frame_idx][0][i].tolist() for i in range(21)],
@@ -40,7 +49,6 @@ def mask_generation(frames, frame_names, data_array):
         data_array[ann_frame_idx][0][12][1] - 50   
     ], dtype=np.float32)
 
-    prompts[ann_obj_id] = points, labels
     _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
         inference_state=inference_state,
         frame_idx=ann_frame_idx,
@@ -50,18 +58,18 @@ def mask_generation(frames, frame_names, data_array):
         box=box,
     )
 
-    plt.figure(figsize=(9, 6))
-    plt.title(f"Frame {ann_frame_idx} (Right Hand)")
-    plt.imshow(Image.open(os.path.join(frames, frame_names[ann_frame_idx])))
-    show_box(box, plt.gca())
-    show_points(points, labels, plt.gca())
-    for i, out_obj_id in enumerate(out_obj_ids):
-        show_points(*prompts[out_obj_id], plt.gca())
-        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id)
-    plt.show()
+    visualize_frame(frames=frames,
+                    frame_names=frame_names,
+                    points=points,
+                    labels=labels,
+                    box=box,
+                    out_mask_logits=out_mask_logits,
+                    out_obj_ids=out_obj_ids,
+                    ann_obj_id=ann_obj_id)
     
+    # Refine left hand in the first frame and visualize
     ann_frame_idx = 0  
-    ann_obj_id = 8  
+    ann_obj_id = 1
 
     points = np.array(
         [data_array[ann_frame_idx][1][i].tolist() for i in range(21)],
@@ -80,7 +88,6 @@ def mask_generation(frames, frame_names, data_array):
         data_array[ann_frame_idx][1][8][1] - 30  
     ], dtype=np.float32)
 
-    prompts[ann_obj_id] = points, labels
     _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
         inference_state=inference_state,
         frame_idx=ann_frame_idx,
@@ -90,17 +97,16 @@ def mask_generation(frames, frame_names, data_array):
         box=box,
     )
     
-    plt.figure(figsize=(9, 6))
-    plt.title(f"Frame {ann_frame_idx} (Left Hand)")
-    plt.imshow(Image.open(os.path.join(frames, frame_names[ann_frame_idx])))
-    show_box(box, plt.gca())
-    show_points(points, labels, plt.gca())
-    for i, out_obj_id in enumerate(out_obj_ids):
-        show_points(*prompts[out_obj_id], plt.gca())
-        show_mask((out_mask_logits[i] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_id) 
-    plt.show()
+    visualize_frame(frames=frames,
+                    frame_names=frame_names,
+                    points=points,
+                    labels=labels,
+                    box=box,
+                    out_mask_logits=out_mask_logits,
+                    out_obj_ids=out_obj_ids,
+                    ann_obj_id=ann_obj_id)
     
-
+    # Propagate to all frames and visualize
     video_segments = {} 
     for out_frame_idx, out_obj_ids, out_mask_logits in predictor.propagate_in_video(inference_state):
         video_segments[out_frame_idx] = {
@@ -112,12 +118,13 @@ def mask_generation(frames, frame_names, data_array):
     plt.close("all")
     for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
         plt.figure(figsize=(6, 4))
-        plt.title(f"frame {out_frame_idx}")
+        plt.title(f"Frame {out_frame_idx}")
         plt.imshow(Image.open(os.path.join(frames, frame_names[out_frame_idx])))
         for out_obj_id, out_mask in video_segments[out_frame_idx].items():
             show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
-
-    output_video_path = "output_video.mp4"
+            plt.show()
+    
+    # Write video to output_video_path
     fps = 30
     frame_size = Image.open(os.path.join(frames, frame_names[0])).size
 

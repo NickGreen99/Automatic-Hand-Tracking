@@ -1,6 +1,7 @@
-import torch
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
+import os
 
 def show_mask(mask, ax, obj_id=None, random_color=False):
     if random_color:
@@ -25,3 +26,12 @@ def show_box(box, ax):
     x0, y0 = box[0], box[1]
     w, h = box[2] - box[0], box[3] - box[1]
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))
+
+def visualize_frame(frames, frame_names, points, labels, box, out_mask_logits, out_obj_ids, ann_obj_id, frame_idx=0,):
+    plt.figure(figsize=(9, 6))
+    plt.title(f"Frame {frame_idx}")
+    plt.imshow(Image.open(os.path.join(frames, frame_names[frame_idx])))
+    show_box(box, plt.gca())
+    show_points(points, labels, plt.gca())
+    show_mask((out_mask_logits[ann_obj_id] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_ids[ann_obj_id])
+    plt.show()

@@ -1,6 +1,9 @@
 import torch
+import os
 
 def check_cuda():
+    # if using Apple MPS, fall back to CPU for unsupported ops
+    os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
     # select the device for computation
     if torch.cuda.is_available():
         device = torch.device("cuda")

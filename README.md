@@ -10,10 +10,10 @@ This project utilizes SAM2 and mediapipe, in order to build an automatic pipelin
 - [Part 2 (Create video with hand masks)](#part-2-create-video-with-hand-masks)
 
 ## Installation
-SAM 2 needs to be installed first before use. We need `torch>=2.5.1`, as well as `python>=3.10`. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.12` and activate it.
+SAM 2 needs to be installed first before use. We need `torch>=2.5.1`, as well as `python>=3.10`. Create a conda environment with python `python>=3.10`. Here we create a `conda` environment with `python=3.10` and activate it.
 
 ```shell
-conda create -n sam2_test python=3.12 -y
+conda create -n sam2_test python=3.10 -y
 conda activate sam2_test
 ```
 
@@ -21,7 +21,7 @@ Make sure you have `pip` installed to install the requirements.
 
 ```shell
 git clone https://github.com/NickGreen99/Automatic-Hand-Tracking.git
-
+cd Automatic-Hand-Tracking/
 pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu118 --extra-index-url https://pypi.org/simple
 ```
 
@@ -42,7 +42,7 @@ The file `hand_locations.py` has the simple Python function `hand_locations()` t
 
 This function processes the first frame of a video to detect hand landmarks using MediaPipe. These landmarks are converted to pixel coordinates (x, y).  These landmarks will then  be used as prompt points in Part 2.The output is a NumPy array with shape `(1, 2, 21, 2)` where the dimensions correspond to one frame, up to two hands, 21 landmarks per hand, and two coordinates (x, y). 
 
-Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger, ring finger, pinky :
+Below is a list of all hand landmarks (wrist, thumb, index finger, middle finger, ring finger, pinky) :
 
 | Landmark Index | Name       | Typical Location                           |
 |---------------:|:-----------|:-------------------------------------------|
@@ -74,7 +74,7 @@ As seen below Mediapipe is essential for helping as locate the position of the h
 
 ## Part 2 (Create video with hand masks)
 
-This function generates segmentation masks for hand regions in a video using the output from `hand_locations()`. It initializes the SAM2 video predictor model and uses hand landmarks and bounding boxes as prompts to segment specific hand regions in each frame.
+This function generates segmentation masks for hand regions in a video using the output from `hand_locations()`. It initializes the SAM2 video predictor model and uses hand landmarks and bounding boxes as prompts to segment specific hand regions in each frame. Its input parameters are the NumPy array calculated in Part 1 and the output video path which defaults to `output_video.mp4`.
 
 The function processes a video by identifying landmarks for each hand, defining bounding boxes around those landmarks, and using these as inputs to the SAM2 model. 
 

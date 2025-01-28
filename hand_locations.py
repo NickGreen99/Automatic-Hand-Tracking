@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 
 def hand_locations(video_path):
+    
+    # Use mediapipe to find hand locations
     mp_hands = mp.solutions.hands
     mp_drawing = mp.solutions.drawing_utils
     hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -52,7 +54,8 @@ def hand_locations(video_path):
 
     cap.release()
     hands.close()
- 
+
+    # 4D NumPy array
     max_hands = 2 
     array_shape = (len(frames_data), max_hands, 21, 2)
     data_array = np.zeros(array_shape, dtype=int)

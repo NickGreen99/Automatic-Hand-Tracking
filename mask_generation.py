@@ -122,7 +122,7 @@ def mask_generation(data_array, output_video_path = "output_video.mp4"):
         plt.imshow(Image.open(os.path.join(frames, frame_names[out_frame_idx])))
         for out_obj_id, out_mask in video_segments[out_frame_idx].items():
             show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
-            plt.show()
+        plt.show()
     
     # Write video to output_video_path
     fps = 30

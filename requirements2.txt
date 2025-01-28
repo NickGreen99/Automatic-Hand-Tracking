@@ -33,9 +33,9 @@ torchvision==0.20.1+cu118; platform_system != "Darwin"
 torchaudio==2.5.1+cu118; platform_system != "Darwin"
 
 # PyTorch for macOS (CPU-only)
-torch==2.5.1; platform_system == "Darwin"
-torchvision==0.20.1; platform_system == "Darwin"
-torchaudio==2.5.1; platform_system == "Darwin"
+torch; platform_system == "Darwin"
+torchvision; platform_system == "Darwin"
+torchaudio; platform_system == "Darwin"
 
 # Platform-specific dependencies
 pywin32==308; platform_system == "Windows"
